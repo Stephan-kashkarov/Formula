@@ -1,5 +1,5 @@
 from ui.app import App
-from engine import text, line, point, box
+from engine import text, line, pixel, box
 
 # RED = (255, 0, 0)
 # GREEN = (0, 255, 0)
