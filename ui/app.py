@@ -10,9 +10,6 @@ class App:
     def interact(self):
         pass
 
-    def update(self):
-        pass
-
     def run(self):
         while True:
             self.draw()
