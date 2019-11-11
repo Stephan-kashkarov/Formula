@@ -1,4 +1,4 @@
-import formula
+from Formula import App
 
 # Network
 def do_connect(essid, password):
@@ -12,7 +12,7 @@ def do_connect(essid, password):
             pass
     print('network config:', sta_if.ifconfig())
 
-app = formula.App()
+app = App()
 
 while True:
     if app.active:
