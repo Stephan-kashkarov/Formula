@@ -14,8 +14,4 @@ def do_connect(essid, password):
 
 app = App()
 
-while True:
-    if app.active:
-        app.update()
-    else:
-        app.active = app.sleep()
+app.run()
