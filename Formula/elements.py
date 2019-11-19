@@ -44,14 +44,12 @@ class Clock(Element):
         Returns: 
             None
         """
-        tft.fill(TFT.WHITE)
+        display.fill(display.color565((255, 255, 255)))
         # tft.circle(Center, 63, TFT.GRAY)
-        h, m, s = convTime(t)
-        print("a")
-        hand(h, 40, (64, 64), TFT.BLACK)
-        print("b")
-        hand(m, 20, (64, 64), TFT.GRAY)
-        hand(s, 50, (64, 64), TFT.GREEN)
+        h, m, s = self.convTime(t)
+        self.hand(h, 40, (64, 64), display.color565((0, 0, 0))
+        self.hand(m, 20, (64, 64), display.color565((150, 150, 150))
+        self.hand(s, 50, (64, 64), display.color565((0, 255, 0))
 
     def convTime(self, t) -> (int, int, int):
         """ Conv time
