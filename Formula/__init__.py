@@ -21,17 +21,16 @@ class Gesture:
         return sum([abs(x) for x in [self.x, self.y, self.z]])
 
 class App:
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.active = True
         self.spi = machine.SPI(1)
         self.i2c = machine.I2C(freq=400000)
         self.interaction = list()
-        self.view = [HomeView()]
+        self.view = [*kwargs.get("view", HomeView())]
         self.timer = 0
         self.sleep_timer = pyb.Timer(1)
         self.sleep_timer.init(freq=1)
         self.sleep_timer.callback(self.incr_timer())
-        self.screen = None
 
     def incr_timer(self) -> None:
         self.timer += 1
@@ -60,5 +59,4 @@ class App:
 
     def get_gesture(self) -> [Gesture]:
         for i in range(5):
-            for event in accel.read():
-                yield Gesture(**event)
+            yield Gesture(**accel.read())
