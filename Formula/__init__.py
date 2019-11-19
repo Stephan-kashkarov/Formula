@@ -2,23 +2,10 @@ import machine
 import pyb
 import ft6206 as touch
 from lis2hh12 import accel
-from views import HomeView
-
-class Touch:
-    def __init__(self, **kwargs):
-        self.x = kwargs['x']
-        self.y = kwargs['y']
-        self.id = kwargs['id']
+from Formula.views import HomeView
+from Formula.interactions import Touch, Gesture
 
 
-class Gesture:
-    def __init__(self, **kwargs):
-        self.x = kwargs['x']
-        self.y = kwargs['y']
-        self.z = kwargs['z']
-
-    def total(self):
-        return sum([abs(x) for x in [self.x, self.y, self.z]])
 
 class App:
     def __init__(self, **kwargs):

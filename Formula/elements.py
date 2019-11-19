@@ -9,6 +9,7 @@ class Element:
         self.size = kwargs['size']
         self.func = kwargs.get('func')
         self.children = kwargs.get('children', list())
+        self.base = True
 
 
 class Box(Element):
@@ -23,6 +24,7 @@ class Box(Element):
 class Row(Element):
     def __init__(self, **kwargs):
         super().__init__(self)
+        self.base = False
 
     def draw(self) -> None:
         base = self.pos[0]
@@ -36,6 +38,7 @@ class Row(Element):
 class Col(Element):
     def __init__(self, **kwargs):
         super().__init__(self)
+        self.base = False
 
     def draw(self) -> None:
         base = self.pos[1]
