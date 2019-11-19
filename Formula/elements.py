@@ -5,7 +5,6 @@ import time
 
 class Element:
     def __init__(self, **kwargs):
-        self.bitmap = list()
         self.pos = kwargs['pos']
         self.size = kwargs['size']
         self.func = kwargs.get('func')
@@ -26,8 +25,25 @@ class Row(Element):
         super().__init__(self)
 
     def draw(self) -> None:
-        pass
+        base = self.pos[0]
+        modifier = self.size[0]/len(self.children if self.children else 1)
+        for child in children:
+            child.pos[0] = self.pos[0] + base + modifier
+            child.size[0] = modifier
+            child.draw()
 
+
+class Col(Element):
+    def __init__(self, **kwargs):
+        super().__init__(self)
+
+    def draw(self) -> None:
+        base = self.pos[1]
+        modifier = self.size[1]/len(self.children if self.children else 1)
+        for child in children:
+            child.pos[1] = self.pos[1] + base + modifier
+            child.size[1] = modifier
+            child.draw()
 
 class Clock(Element):
     def __init__(self, **kwargs):
