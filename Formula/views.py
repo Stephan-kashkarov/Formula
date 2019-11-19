@@ -1,9 +1,20 @@
 import pyb
-from Formula.elements import (Box, Clock)
+from Formula.elements import (Box, Clock, Row)
 
 class View:
-    def __init__(self):
-        pass
+    """
+    View class
+
+    an instance of a view is like a page
+    on a website. It is made to keep content
+    organised and to make multi page apps possible.
+    
+    All functions are to be expanded from in this class
+    """
+    def __init__(self, **kwargs):
+        self.height = kwargs['height']
+        self.width = kwargs['width']
+        self.stack = []
 
     def render(self):
         pass
@@ -13,31 +24,42 @@ class View:
 
 
 class HomeView(View):
+    """
+    HomeView View
+
+    The homeview is the defualt view for the oage and is simply
+    an example view with two boxes on the screen next to eachother
+    the left box renders a clock and switches view and the right box
+    renders a screen demo view which is yet to be implemented
+    """
     def __init__(self, **kwargs):
         super().__init__()
 
     def render(self) -> list:
-        return [
-            Box(
-                pos=(0, 0),
-                size=(self.width/2, self.height),
-                color=(255, 0, 0),
-                func=lambda: self.stack.append(ClockView),
-            ),
-            Box(
-                pos=(self.width/2, 0),
-                size=(, self.height),
-                color=(0, 255, 0),
-                func=lambda: self.stack.append(DemoView),
-            )
-        ]
+        return Row(
+            pos=(0, 0),
+            size=(self.width, self.height),
+            children=[
+                Box(
+                    pos=(0, 0),
+                    size=(None, self.height),
+                    color=(255, 0, 0),
+                    func=lambda: self.stack.append(ClockView),
+                ),
+                Box(
+                    pos=(self.width/2, 0),
+                    size=(None, self.height),
+                    color=(0, 255, 0),
+                ),
+            ]
+        )
+
 
 
 class ClockView(View):
-    def __init__(self, **kwargs) -> ClockView:
+    """ClockView is an example view for the clock used in the example above"""
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.watch_timer = pyb.Timer(id=2)
 
     def render(self):
-        current_time = time.localtime()
-        return Clock(current_time)
+        return Clock()

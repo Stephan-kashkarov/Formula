@@ -2,8 +2,24 @@ import machine
 import pyb
 import st7789 as display
 import time
+import math
 
 class Element:
+    """
+    Element class
+
+    The element class contains the basis of an element,
+    each element is a building block of the program and the
+    lowest level of the framework.
+
+    Arguemtns:
+    - pos (x, y): the top left corner position of the element relative to the screen
+    - size (w, h): the width and height of the element
+    - func: a callback for interaction objects
+    - children: a list of sub elements
+    - base: a boolean defining if the element is a base or not
+
+    """
     def __init__(self, **kwargs):
         self.pos = kwargs['pos']
         self.size = kwargs['size']
@@ -13,6 +29,12 @@ class Element:
 
 
 class Box(Element):
+    """
+    Box element
+
+    The box element is a solid box of color based
+    on the element class
+    """
     def __init__(self, **kwargs):
         super().__init__(self)
         self.color = kwargs['color']
@@ -22,6 +44,15 @@ class Box(Element):
 
 
 class Row(Element):
+    """
+    Row elment
+
+    The row element is a structural non-base
+    element used to horizontally arrange elements.
+    Each element is resized horizontally to ensure
+    a fit
+    
+    """
     def __init__(self, **kwargs):
         super().__init__(self)
         self.base = False
@@ -29,13 +60,22 @@ class Row(Element):
     def draw(self) -> None:
         base = self.pos[0]
         modifier = self.size[0]/len(self.children if self.children else 1)
-        for child in children:
-            child.pos[0] = self.pos[0] + base + modifier
+        for i, child in enumerate(self.children):
+            child.pos[0] = self.pos[0] + base + (modifier * i)
             child.size[0] = modifier
             child.draw()
 
 
 class Col(Element):
+    """
+    Col elment
+
+    The col element is a structural non-base
+    element used to vertically arrange elements.
+    Each element is resized vertically to ensure
+    a fit
+    
+    """
     def __init__(self, **kwargs):
         super().__init__(self)
         self.base = False
@@ -43,12 +83,21 @@ class Col(Element):
     def draw(self) -> None:
         base = self.pos[1]
         modifier = self.size[1]/len(self.children if self.children else 1)
-        for child in children:
+        for child in self.children:
             child.pos[1] = self.pos[1] + base + modifier
             child.size[1] = modifier
             child.draw()
 
 class Clock(Element):
+    """
+    Clock element
+
+    The clock element shows what a fully flashed
+    out element can be. This element renders into
+    an analogue clock within the pos of the element
+    and is totally resuable.
+    
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -65,10 +114,10 @@ class Clock(Element):
         """
         display.fill(display.color565((255, 255, 255)))
         # tft.circle(Center, 63, TFT.GRAY)
-        h, m, s = self.convTime(t)
-        self.hand(h, 40, (64, 64), display.color565((0, 0, 0))
-        self.hand(m, 20, (64, 64), display.color565((150, 150, 150))
-        self.hand(s, 50, (64, 64), display.color565((0, 255, 0))
+        h, m, s = self.convTime(time.localtime())
+        self.hand(h, 40, (64, 64), display.color565((0, 0, 0)))
+        self.hand(m, 20, (64, 64), display.color565((150, 150, 150)))
+        self.hand(s, 50, (64, 64), display.color565((0, 255, 0)))
 
     def convTime(self, t) -> (int, int, int):
         """ Conv time
@@ -82,7 +131,7 @@ class Clock(Element):
         """
         return (t[3] % 12) * 5, t[4], t[5]
 
-    def hand(sec: float, radius: float, center: (int, int), color: (int, int, int)) -> None:
+    def hand(self, sec: float, radius: float, center: (int, int), color: (int, int, int)) -> None:
         """
         hand function
         This function takes a number form 0 to 60

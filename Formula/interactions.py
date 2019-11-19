@@ -1,4 +1,10 @@
 class Touch:
+    """
+    Touch object
+    
+    The touch object contains the x, y and id of a
+    touch event.
+    """
     def __init__(self, **kwargs):
         self.type = 'Touch'
         self.x = kwargs['x']
@@ -7,6 +13,12 @@ class Touch:
 
 
 class Gesture:
+    """
+    Gesture object
+
+    The Gesture object contains the x, y and z of a
+    Gesture event.
+    """
     def __init__(self, **kwargs):
         self.type = 'Gesture'
         self.x = kwargs['x']
